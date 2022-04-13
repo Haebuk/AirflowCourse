@@ -10,6 +10,7 @@ from airflow.operators.python import PythonOperator
 from airflow.operators.bash import BashOperator
 from airflow.providers.apache.hive.operators.hive import HiveOperator
 from airflow.providers.apache.spark.operators.spark_submit import SparkSubmitOperator
+from airflow.operators.email import EmailOperator
 
 default_args = {
     "owner": "airflow",
@@ -104,4 +105,11 @@ with DAG(
         application="/opt/airflow/dags/scripts/forex_processing.py",
         conn_id="spark_conn",
         verbose=False,
+    )
+
+    send_email_notification = EmailOperator(
+        task_id="send_email_notification",
+        to="airflow_course@yopmail.com",
+        subject="forex_data_pipeline",
+        html_content="<h3>forex_data_pipeline</h3>",
     )
