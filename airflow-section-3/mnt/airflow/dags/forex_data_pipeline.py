@@ -42,8 +42,10 @@ def download_rates():
                 json.dump(outdata, outfile)
                 outfile.write("\n")
 
+
 def _get_message() -> str:
     return "Hi from forex_data_pipeline"
+
 
 with DAG(
     "forex_data_pipeline",
@@ -121,5 +123,16 @@ with DAG(
         task_id="send_slack_notification",
         http_conn_id="slack_conn",
         message=_get_message(),
-        channel="#monitor-airflow"
+        channel="#monitor-airflow",
+    )
+
+    (
+        is_forex_rates_available
+        >> is_forex_currencies_file_available
+        >> downloading_rates
+        >> saving_rates
+        >> creating_forex_rates_table
+        >> forex_processing
+        >> send_email_notification
+        >> send_slack_notification
     )
