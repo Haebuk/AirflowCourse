@@ -3,7 +3,13 @@ from airflow.operators.bash_operator import BashOperator
 
 from datetime import datetime, timedelta
 
-default_args = {"start_date": datetime(2019, 1, 1), "owner": "Airflow"}
+default_args = {
+    "start_date": datetime(2019, 1, 1),
+    "owner": "Airflow",
+    "email": "owner@test.com",
+    "retries": 3,
+    "retry_delay": timedelta(minutes=5),
+}
 
 with DAG(
     dag_id="project_b",

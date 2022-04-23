@@ -19,7 +19,7 @@ default_args = {
     "owner": "Airflow",
     "retries": 3,
     "retry_delay": timedelta(seconds=60),
-    "emails": ["owner@test.com"],
+    "email": ["owner@test.com"],
     "email_on_failure": True,
     "email_on_retry": False,
     "on_failure_callback": on_failure_task,
